@@ -31,10 +31,6 @@ def make_window():
                                [sg.Combo(['Val1', 'Val2', 'Val3'], 'Val1', size=10)],
                                [sg.Button('Classify', size=10)],
                               ]
-    #TODO Add animated error x epoch graph, updated while training
-    graph_manager_layout = [[sg.Text('Error x Epoch Graph', font='bold 14')]]
-
-
 
     layout = [[sg.MenubarCustom(menu_def, key='-MENU-')], 
               [sg.Text('Training parameters', font='bold 14')],
