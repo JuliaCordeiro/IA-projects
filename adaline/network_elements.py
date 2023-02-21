@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 
 class Neuron:
@@ -20,8 +21,8 @@ class Madaline:
     output_layer_pure = np.zeros(21, dtype=float)
     output_layer_liquid = np.zeros(21, dtype=int)
     error_history = []
-    inputs = np.loadtxt(open("docs/x.csv", "rb"), delimiter=",", skiprows=1)
-    targets = np.loadtxt(open("docs/targets.csv", "rb"), delimiter=",", skiprows=1)
+    inputs = np.loadtxt(open("docs/x.csv", "rb"), delimiter=",", skiprows=0)
+    targets = np.loadtxt(open("docs/targets.csv", "rb"), delimiter=",", skiprows=0)
 
     def __init__(self):
         for i in range(63):
@@ -41,7 +42,7 @@ class Madaline:
     def calculate_error(self, target):
         error = 0.0
         for output_index in range(21):
-            error += 0.5 * ((target[output_index] - self.output_layer_liquid[output_index]) ** 2.0)
+            error += 0.5 * (math.pow((target[output_index] - self.output_layer_liquid[output_index]), 2.0))
         return error
 
     def train(self, inputs, targets, learning_rate, max_epoch, minimum_error):
@@ -60,16 +61,16 @@ class Madaline:
                         new_weight = self.neurons[neuron_index].get_weight(output_index) + learning_rate * (
                                     targets[input_index][output_index] - self.output_layer_liquid[output_index]) * \
                                      inputs[input_index][neuron_index]
+                        #print(f'\tWeight update: W[{neuron_index}][{output_index}] {self.neurons[neuron_index].get_weight(output_index)} -> {new_weight}')
                         self.neurons[neuron_index].update_weight(output_index, new_weight)
             # Save error for history
             self.error_history.append(error)
             # Increment epochs
+            print(f'[LOG] Training... E:{epoch} error:{error}%')
             epoch += 1
-            print(f'[LOG] Training... E:{epoch} error:{error * 100}%')
 
     def get_error_history(self):
         return self.error_history
-
 
 def test():
     print('Starting test')
@@ -77,7 +78,11 @@ def test():
     madaline = Madaline()
     print(madaline)
 
-    madaline.train(madaline.inputs, madaline.targets, 0.5, 5, 0.10)
+    print(madaline.inputs.shape)
+    print('----')
+    print(madaline.targets.shape)
+
+    madaline.train(madaline.inputs, madaline.targets, 0.5, 250, 0.10)
     print(madaline.get_error_history())
 
 
