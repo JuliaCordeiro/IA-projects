@@ -21,10 +21,10 @@ class Madaline:
     output_layer_liquid = np.zeros(21, dtype=int)
     error_history = []
     inputs = np.loadtxt(open("docs/x.csv", "rb"), delimiter=",", skiprows=1)
+    targets = np.loadtxt(open("docs/targets.csv", "rb"), delimiter=",", skiprows=1)
 
     def __init__(self):
-        i = 0
-        while i < 63:
+        for i in range(63):
             self.neurons.append(Neuron())
 
     def generate_output(self, input):
@@ -69,3 +69,16 @@ class Madaline:
 
     def get_error_history(self):
         return self.error_history
+
+
+def test():
+    print('Starting test')
+
+    madaline = Madaline()
+    print(madaline)
+
+    madaline.train(madaline.inputs, madaline.targets, 0.5, 5, 0.10)
+    print(madaline.get_error_history())
+
+
+test()
