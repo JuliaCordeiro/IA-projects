@@ -1,4 +1,15 @@
 import PySimpleGUI as sg
+import matplotlib.pyplot as plt
+import graph_generator as graph
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+
+def draw_figure(canvas, figure):
+    tkcanvas = FigureCanvasTkAgg(figure, canvas)
+    tkcanvas.draw()
+    tkcanvas.get_tk_widget().pack(side='top', fill='both', expand=1)
+    return tkcanvas
+
 
 def make_window():
     sg.theme('SystemDefault')
@@ -20,8 +31,6 @@ def make_window():
                                [sg.Combo(['Val1', 'Val2', 'Val3'], 'Val1', size=10)],
                                [sg.Button('Classify', size=10)],
                               ]
-    #TODO Add animated error x epoch graph, updated while training
-    graph_manager_layout = [[sg.Text('Error x Epoch Graph', font='bold 14')]]
 
     layout = [[sg.MenubarCustom(menu_def, key='-MENU-')], 
               [sg.Text('Training parameters', font='bold 14')],
@@ -30,10 +39,17 @@ def make_window():
               [sg.Text('Minimum error', size=10, justification='right', tooltip='Error value that stops training once achieved. Use values between 0.0 and 1.0'), sg.Input(key='-MIN_ERROR-')],
               [sg.Button('Train', size=15)],
               [sg.HSeparator()],
-              [sg.Column(input_grid_namager), sg.Column(input_selectors_manager, vertical_alignment='top'), sg.VSeparator(), sg.Column(graph_manager_layout)]
+              [sg.Column(input_grid_namager), sg.Column(input_selectors_manager, vertical_alignment='top'), sg.VSeparator(), sg.Canvas(key='-CANVAS-')]
             ]
     layout[-1].append(sg.Sizegrip())
     window = sg.Window('Adaline', layout, grab_anywhere=True, resizable=True, margins=(0,0), use_custom_titlebar=True, finalize=True, keep_on_top=True)
+
+    # TEST VALUES FOR GRAPHS
+    error_graph = graph.draw_graph(error, epoch, 0.987561)
+    error_graph = graph.draw_graph(error, epoch, 0.875431)
+    error_graph = graph.draw_graph(error, epoch, 0.458712)
+    tkcanvas = draw_figure(window['-CANVAS-'].TKCanvas, error_graph)
+
     window.set_min_size(window.size)
     return window
 
@@ -56,5 +72,9 @@ def main():
                      keep_on_top=True)
     window.close()
     exit(0)
+
+
+error = []
+epoch = []
 
 main()
