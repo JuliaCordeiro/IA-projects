@@ -6,15 +6,15 @@ def make_window():
                 ['&Help', ['&About']] ]
 
     input_grid_namager = [[sg.Text('Input', font='bold 14')],
-                          [sg.Checkbox('', pad=(0,0), key=f'-CB0{i}') for i in range (0,6)],
-                          [sg.Checkbox('', pad=(0,0), key=f'-CB1{i}') for i in range (0,6)],
-                          [sg.Checkbox('', pad=(0,0), key=f'-CB2{i}') for i in range (0,6)],
-                          [sg.Checkbox('', pad=(0,0), key=f'-CB3{i}') for i in range (0,6)],
-                          [sg.Checkbox('', pad=(0,0), key=f'-CB4{i}') for i in range (0,6)],
-                          [sg.Checkbox('', pad=(0,0), key=f'-CB5{i}') for i in range (0,6)],
-                          [sg.Checkbox('', pad=(0,0), key=f'-CB6{i}') for i in range (0,6)],
-                          [sg.Checkbox('', pad=(0,0), key=f'-CB7{i}') for i in range (0,6)],
-                          [sg.Checkbox('', pad=(0,0), key=f'-CB8{i}') for i in range (0,6)],
+                          [sg.Checkbox('', pad=(0,0), key=f'-CB0{i}') for i in range (0,7)],
+                          [sg.Checkbox('', pad=(0,0), key=f'-CB1{i}') for i in range (0,7)],
+                          [sg.Checkbox('', pad=(0,0), key=f'-CB2{i}') for i in range (0,7)],
+                          [sg.Checkbox('', pad=(0,0), key=f'-CB3{i}') for i in range (0,7)],
+                          [sg.Checkbox('', pad=(0,0), key=f'-CB4{i}') for i in range (0,7)],
+                          [sg.Checkbox('', pad=(0,0), key=f'-CB5{i}') for i in range (0,7)],
+                          [sg.Checkbox('', pad=(0,0), key=f'-CB6{i}') for i in range (0,7)],
+                          [sg.Checkbox('', pad=(0,0), key=f'-CB7{i}') for i in range (0,7)],
+                          [sg.Checkbox('', pad=(0,0), key=f'-CB8{i}') for i in range (0,7)],
                         ]
     input_selectors_manager = [
                                [sg.Combo(['Val1', 'Val2', 'Val3'], 'Val1', size=10)],
