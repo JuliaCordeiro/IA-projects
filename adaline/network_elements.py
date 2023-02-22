@@ -38,6 +38,11 @@ class Madaline:
                 self.output_layer_liquid[output_index] = 1
             else:
                 self.output_layer_liquid[output_index] = -1
+    
+    def classify(self, input_id):
+        input = self.inputs[input_id]
+        self.generate_output(input)
+        return self.output_layer_liquid.tolist().index(1)
 
     def calculate_error(self, target):
         error = 0.0
@@ -72,8 +77,8 @@ class Madaline:
     def get_error_history(self):
         return self.error_history
 
-def test():
-    print('Starting test')
+def train(learning_rate, max_epochs, minimum_error):
+    print(f'Starting test learning_rate={learning_rate}, max_epochs={max_epochs}, minimum_error={minimum_error}')
 
     madaline = Madaline()
     print(madaline)
@@ -82,8 +87,7 @@ def test():
     print('----')
     print(madaline.targets.shape)
 
-    madaline.train(madaline.inputs, madaline.targets, 0.5, 250, 0.10)
+    madaline.train(madaline.inputs, madaline.targets, learning_rate, max_epochs, minimum_error)
     print(madaline.get_error_history())
-
-
-test()
+    return madaline
+    
