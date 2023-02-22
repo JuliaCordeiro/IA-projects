@@ -1,7 +1,4 @@
 import PySimpleGUI as sg
-import matplotlib.pyplot as plt
-import graph_generator as graph
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
 import network_elements as ne
 
@@ -10,11 +7,6 @@ CHARACTERS = np.loadtxt(open("docs/x.csv", "rb"), delimiter=",", skiprows=0)
 MADALINE = ne.Madaline()
 CURRENT_COMBO_VALUE = 'A1'
 
-def draw_figure(canvas, figure):
-    tkcanvas = FigureCanvasTkAgg(figure, canvas)
-    tkcanvas.draw()
-    tkcanvas.get_tk_widget().pack(side='top', fill='both', expand=1)
-    return tkcanvas
 
 def update_character(window, char_id):
     index = COMBO_VALUES.index(char_id)
@@ -33,7 +25,6 @@ def update_character(window, char_id):
             j += 1
         i += 1
     
-
 
 def make_window():
     sg.theme('SystemDefault')
@@ -75,12 +66,6 @@ def make_window():
     window = sg.Window('Adaline', layout, grab_anywhere=True, resizable=True, margins=(0, 0), use_custom_titlebar=True,
                        finalize=True, keep_on_top=True)
 
-    # TEST VALUES FOR GRAPHS
-    error_graph = graph.draw_graph(error, epoch, 0.987561)
-    error_graph = graph.draw_graph(error, epoch, 0.875431)
-    error_graph = graph.draw_graph(error, epoch, 0.458712)
-    tkcanvas = draw_figure(window['-CANVAS-'].TKCanvas, error_graph)
-
     window.set_min_size(window.size)
     return window
 
@@ -108,7 +93,7 @@ def main():
             max_epochs = float(values['-MAX_EPOCHS-'])
             min_error = float(values['-MIN_ERROR-'])
             print(f'[LOG] Calling Train method on network_elements. Values=(learning_rate={learning_rate}, max_epochs={max_epochs}, minimum_error={min_error})')
-            MADALINE = ne.train(learning_rate, max_epochs, min_error)
+            MADALINE = ne.train(window, learning_rate, max_epochs, min_error)
             window['Classify'].update(disabled=False)
         elif event == 'Classify':
             print('[LOG] Clicked Classify')
@@ -122,8 +107,5 @@ def main():
     window.close()
     exit(0)
 
-
-error = []
-epoch = []
 
 main()

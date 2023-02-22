@@ -1,5 +1,7 @@
 import numpy as np
 import math
+import matplotlib.pyplot as plt
+import graph_generator as graph
 
 
 class Neuron:
@@ -50,7 +52,7 @@ class Madaline:
             error += 0.5 * (math.pow((target[output_index] - self.output_layer_liquid[output_index]), 2.0))
         return error
 
-    def train(self, inputs, targets, learning_rate, max_epoch, minimum_error):
+    def train(self, window, inputs, targets, learning_rate, max_epoch, minimum_error):
         epoch = 1
         error = 1.0
         while epoch <= max_epoch and error > minimum_error:
@@ -70,6 +72,8 @@ class Madaline:
                         self.neurons[neuron_index].update_weight(output_index, new_weight)
             # Save error for history
             self.error_history.append(error)
+            error_graph = graph.draw_graph(self.error_history)
+            graph.draw_figure(window['-CANVAS-'].TKCanvas, error_graph)
             # Increment epochs
             print(f'[LOG] Training... E:{epoch} error:{error}%')
             epoch += 1
@@ -77,7 +81,7 @@ class Madaline:
     def get_error_history(self):
         return self.error_history
 
-def train(learning_rate, max_epochs, minimum_error):
+def train(window, learning_rate, max_epochs, minimum_error):
     print(f'Starting test learning_rate={learning_rate}, max_epochs={max_epochs}, minimum_error={minimum_error}')
 
     madaline = Madaline()
@@ -87,7 +91,7 @@ def train(learning_rate, max_epochs, minimum_error):
     print('----')
     print(madaline.targets.shape)
 
-    madaline.train(madaline.inputs, madaline.targets, learning_rate, max_epochs, minimum_error)
+    madaline.train(window, madaline.inputs, madaline.targets, learning_rate, max_epochs, minimum_error)
     print(madaline.get_error_history())
     return madaline
     
