@@ -5,7 +5,10 @@ import graph_generator as graph
 
 
 class Neuron:
-    weights = np.random.uniform(low=-0.5, high=0.5, size=21)
+    weights = []
+
+    def __init__(self):
+        self.weights = np.random.rand(21) * 1 - 0.5
 
     def update_weight(self, index, new_weight):
         self.weights[index] = new_weight
@@ -27,8 +30,7 @@ class Madaline:
     targets = np.loadtxt(open("docs/targets.csv", "rb"), delimiter=",", skiprows=0)
 
     def __init__(self):
-        for i in range(63):
-            self.neurons.append(Neuron())
+        self.neurons = [Neuron() for i in range(63)]
 
     def generate_output(self, input):
         for output_index in range(21):
@@ -104,5 +106,15 @@ def test():
     print(f'1: {neuron1}')
     print(f'2: {neuron2}')
 
-test()
 
+def test1():
+    neurons = [Neuron() for i in range(63)]
+    print(neurons)
+
+
+def test2():
+    madaline = Madaline()
+    print(madaline)
+
+
+test2()
