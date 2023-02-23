@@ -69,7 +69,6 @@ class Madaline:
         while epoch <= max_epoch and error > minimum_error:
             error = 0.0
             for input_sample_index in range(21):
-                
                 # Process input in the network
                 self.generate_output(inputs[input_sample_index])
                 
@@ -103,9 +102,7 @@ class Madaline:
             # Save error for history
             self.error_history.append(error)
 
-            # error_graph = graph.draw_graph(self.error_history)
-            # graph.draw_figure(window['-CANVAS-'].TKCanvas, error_graph)
-            # Increment epochs
+            graph.update_graph(window['-CANVAS-'].TKCanvas, self.error_history)
             
             if not FULL_DEBUG:
                 print(f'[LOG] Training... E:{epoch} error:{error}')
