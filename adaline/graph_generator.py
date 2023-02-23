@@ -22,8 +22,10 @@ def error_values_plot(error, epoch, ax):
 
 
 def draw_graph(error):
-    matplotlib.use('TkAgg')
+    if len(error) <= 1:
+        EPOCH.clear()
     EPOCH.append(len(error))
+
     fig = matplotlib.pyplot.figure()
     ax = fig.add_subplot(1, 1, 1)
     error_values_plot(error, EPOCH, ax)

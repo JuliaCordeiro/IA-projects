@@ -53,6 +53,7 @@ class Madaline:
         return error
 
     def train(self, window, inputs, targets, learning_rate, max_epoch, minimum_error):
+        self.error_history.clear()
         epoch = 1
         error = 1.0
         while epoch <= max_epoch and error > minimum_error:
@@ -72,6 +73,7 @@ class Madaline:
                         self.neurons[neuron_index].update_weight(output_index, new_weight)
             # Save error for history
             self.error_history.append(error)
+
             error_graph = graph.draw_graph(self.error_history)
             graph.draw_figure(window['-CANVAS-'].TKCanvas, error_graph)
             # Increment epochs
