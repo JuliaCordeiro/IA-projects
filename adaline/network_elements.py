@@ -5,12 +5,12 @@ import graph_generator as graph
 
 FULL_DEBUG = True
 
+
 class Neuron:
     weights = []
 
     def __init__(self):
-        self.weights = np.random.rand(21) * 1 - 0.5
-
+        self.weights = np.random.rand(7) * 1 - 0.5
 
     def update_weight(self, index, new_weight):
         self.weights[index] = new_weight
@@ -73,7 +73,8 @@ class Madaline:
                 self.generate_output(inputs[input_sample_index])
                 
                 # Calculate error
-                error += self.calculate_error(targets[int(input_sample_index/3)]) #Divides by 3 and truncates to map every 3 positions from input array into a single position from targets array
+                error += self.calculate_error(targets[int(input_sample_index/3)])
+                # Divides by 3 and truncates to map every 3 positions from input array into a single position from targets array
                 
                 # Adjust weights
                 correction_factor = self.calculate_correction_factor(targets[int(input_sample_index/3)])
@@ -84,7 +85,7 @@ class Madaline:
                         self.neurons[neuron_index].update_weight(output_index, new_weight)
 
                 #DEBUG PRINTS
-                if FULL_DEBUG == True:
+                if FULL_DEBUG:
                     print(f'[LOG] Epoch [{1}] Sample: {input_sample_index}')
                     print(f'\tTarget: {targets[int(input_sample_index/3)]}')
                     print(f'\tMadaline output: {self.output_layer_liquid}')
@@ -100,7 +101,7 @@ class Madaline:
             # graph.draw_figure(window['-CANVAS-'].TKCanvas, error_graph)
             # Increment epochs
             
-            if FULL_DEBUG == False:
+            if not FULL_DEBUG:
                 print(f'[LOG] Training... E:{epoch} error:{error}')
             epoch += 1
 
@@ -120,23 +121,3 @@ def train(window, learning_rate, max_epochs, minimum_error):
     madaline.train(window, madaline.inputs, madaline.targets, learning_rate, max_epochs, minimum_error)
     print(madaline.get_error_history())
     return madaline
-
-
-def test():
-    neuron1 = Neuron()
-    neuron2 = Neuron()
-    print(f'1: {neuron1}')
-    print(f'2: {neuron2}')
-
-
-def test1():
-    neurons = [Neuron() for i in range(63)]
-    print(neurons)
-
-
-def test2():
-    madaline = Madaline()
-    print(madaline)
-
-
-test2()
