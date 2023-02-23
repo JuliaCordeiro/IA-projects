@@ -97,9 +97,7 @@ class Madaline:
             # Save error for history
             self.error_history.append(error)
 
-            # error_graph = graph.draw_graph(self.error_history)
-            # graph.draw_figure(window['-CANVAS-'].TKCanvas, error_graph)
-            # Increment epochs
+            graph.update_graph(window['-CANVAS-'].TKCanvas, self.error_history)
             
             if not FULL_DEBUG:
                 print(f'[LOG] Training... E:{epoch} error:{error}')
