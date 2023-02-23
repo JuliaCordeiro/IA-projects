@@ -16,7 +16,6 @@ def error_values_plot(error, epoch, ax):
     ax.plot(error)
     ax.scatter(len(error)-1, error[-1])
 
-    matplotlib.pyplot.xticks(range(len(epoch)), epoch)
     matplotlib.pyplot.title("Erro X Época")
     matplotlib.pyplot.ylabel("Erro")
     matplotlib.pyplot.xlabel("Época")
