@@ -67,8 +67,7 @@ class Madaline:
         error = 1.0
         while epoch <= max_epoch and error > minimum_error:
             error = 0.0
-            for input_sample_index in range(21):
-                
+            for input_sample_index in range(7):
                 # Process input in the network
                 self.generate_output(inputs[input_sample_index])
                 

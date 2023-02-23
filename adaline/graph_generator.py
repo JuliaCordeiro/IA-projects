@@ -33,6 +33,9 @@ def draw_figure(canvas, figure):
 
 def draw_initial_graph(canvas):
     _VARS['plt_fig'] = matplotlib.pyplot.figure()
+    matplotlib.pyplot.title("Erro X Época")
+    matplotlib.pyplot.ylabel("Erro")
+    matplotlib.pyplot.xlabel("Época")
     _VARS['fig_agg'] = draw_figure(canvas, _VARS['plt_fig'])
 
 
