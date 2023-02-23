@@ -39,6 +39,7 @@ class Madaline:
             self.output_layer_pure[output_index] = self.bias[output_index]
             for input_index in range(63):
                 self.output_layer_pure[output_index] += input[input_index] * self.neurons[input_index].get_weight(output_index)
+
             if self.output_layer_pure[output_index] >= 0.0:
                 self.output_layer_liquid[output_index] = 1
             else:
@@ -81,18 +82,23 @@ class Madaline:
                 for neuron_index in range(63):
                     for output_index in range(7):
                         new_weight = self.neurons[neuron_index].get_weight(output_index) + learning_rate * correction_factor * inputs[input_sample_index][neuron_index]
-                        #print(f'\tWeight update [{epoch}]: W[{neuron_index}][{output_index}] {self.neurons[neuron_index].get_weight(output_index)} -> {new_weight}')
                         self.neurons[neuron_index].update_weight(output_index, new_weight)
+                
+                # Adjust Bias
+                for output_index in range(7):
+                    self.bias[output_index] = self.bias[output_index] + learning_rate * correction_factor
 
                 #DEBUG PRINTS
                 if FULL_DEBUG:
                     print(f'[LOG] Epoch [{1}] Sample: {input_sample_index}')
                     print(f'\tTarget: {targets[int(input_sample_index/3)]}')
-                    print(f'\tMadaline output: {self.output_layer_liquid}')
+                    print(f'\tMadaline output liquid: {self.output_layer_liquid}')
+                    print(f'\tMadaline output pure: {self.output_layer_pure}')
+                    print(f'\tBias: {self.bias}')
                     print(f'\tError: {error}')
-                    print(f'\tCorrection factor: {correction_factor}')
-                    for i in range(63):
-                        print(f'\t\t{self.neurons[i]}')
+                    print(f'\tCorrection factor: {correction_factor} Learning Rate: {learning_rate}')
+                    # for i in range(63):
+                    #     print(f'\tN: {self.neurons[i]}')
 
             # Save error for history
             self.error_history.append(error)
