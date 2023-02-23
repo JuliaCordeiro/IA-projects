@@ -62,22 +62,22 @@ class Madaline:
                 # Process input in the network
                 self.generate_output(inputs[input_index])
                 # Calculate error
-                error = self.calculate_error(targets[input_index])
+                error += self.calculate_error(targets[input_index])
                 # Adjust weights
                 for neuron_index in range(63):
                     for output_index in range(21):
                         new_weight = self.neurons[neuron_index].get_weight(output_index) + learning_rate * (
                                     targets[input_index][output_index] - self.output_layer_liquid[output_index]) * \
                                      inputs[input_index][neuron_index]
-                        #print(f'\tWeight update: W[{neuron_index}][{output_index}] {self.neurons[neuron_index].get_weight(output_index)} -> {new_weight}')
+                        # print(f'\tWeight update [{epoch}]: W[{neuron_index}][{output_index}] {self.neurons[neuron_index].get_weight(output_index)} -> {new_weight}')
                         self.neurons[neuron_index].update_weight(output_index, new_weight)
             # Save error for history
             self.error_history.append(error)
 
-            error_graph = graph.draw_graph(self.error_history)
-            graph.draw_figure(window['-CANVAS-'].TKCanvas, error_graph)
+            # error_graph = graph.draw_graph(self.error_history)
+            # graph.draw_figure(window['-CANVAS-'].TKCanvas, error_graph)
             # Increment epochs
-            print(f'[LOG] Training... E:{epoch} error:{error}%')
+            print(f'[LOG] Training... E:{epoch} error:{error}')
             epoch += 1
 
     def get_error_history(self):
@@ -96,4 +96,13 @@ def train(window, learning_rate, max_epochs, minimum_error):
     madaline.train(window, madaline.inputs, madaline.targets, learning_rate, max_epochs, minimum_error)
     print(madaline.get_error_history())
     return madaline
-    
+
+
+def test():
+    neuron1 = Neuron()
+    neuron2 = Neuron()
+    print(f'1: {neuron1}')
+    print(f'2: {neuron2}')
+
+test()
+

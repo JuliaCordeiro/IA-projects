@@ -2,7 +2,7 @@ import matplotlib
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 EPOCH = []
-TK_FIGURE = None
+
 
 def error_values_plot(error, epoch, ax):
     # clear axis
@@ -33,10 +33,19 @@ def draw_graph(error):
 
 
 def draw_figure(canvas, figure):
-    global TK_FIGURE
-    if TK_FIGURE is not None:
-        TK_FIGURE.get_tk_widget().destroy()
-    TK_FIGURE = FigureCanvasTkAgg(figure, canvas)
-    TK_FIGURE.draw()
-    TK_FIGURE.get_tk_widget().pack(side='top', fill='both', expand=1)
-    return TK_FIGURE
+    tk_figure_agg = FigureCanvasTkAgg(figure, canvas)
+    tk_figure_agg.draw()
+    tk_figure_agg.get_tk_widget().pack(side='top', fill='both', expand=1)
+    return tk_figure_agg
+
+
+def draw_initial_graph(canvas):
+    figure = matplotlib.pyplot.figure()
+    tk_initial_figure = draw_figure(canvas, figure)
+    return tk_initial_figure
+
+
+# def update_graph():
+#     tk_figure_agg.get_tk_widget().forget()
+#
+#     matplotlib.pyplot.clf()
