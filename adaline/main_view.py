@@ -8,6 +8,10 @@ CHARACTERS = np.loadtxt(open("docs/x.csv", "rb"), delimiter=",", skiprows=0)
 MADALINE = ne.Madaline()
 CURRENT_COMBO_VALUE = 'A1'
 
+DEFAULT_MAX_EPOCHS = 5
+DEFAULT_MIN_ERROR = 0.05
+DEFAULT_LEARNING_RATE = 0.1
+
 
 def update_character(window, char_id):
     index = COMBO_VALUES.index(char_id)
@@ -52,12 +56,12 @@ def make_window():
               [sg.Text('Training parameters', font='bold 14')],
               [sg.Text('Learning Rate', size=10, justification='right',
                        tooltip='Learning rate used in training. Use values between 0.0 and 1.0.'),
-               sg.Input(key='-LEARNING_RATE-', default_text='0.5')],
+               sg.Input(key='-LEARNING_RATE-', default_text=DEFAULT_LEARNING_RATE)],
               [sg.Text('Epochs', size=10, justification='right',
-                       tooltip='Max number of epochs to be used in training.'), sg.Input(key='-MAX_EPOCHS-', default_text='100')],
+                       tooltip='Max number of epochs to be used in training.'), sg.Input(key='-MAX_EPOCHS-', default_text=DEFAULT_MAX_EPOCHS)],
               [sg.Text('Minimum error', size=10, justification='right',
                        tooltip='Error value that stops training once achieved. Use values between 0.0 and 1.0'),
-               sg.Input(key='-MIN_ERROR-', default_text='0.05')],
+               sg.Input(key='-MIN_ERROR-', default_text=DEFAULT_MIN_ERROR)],
               [sg.Button('Train', size=15)],
               [sg.HSeparator()],
               [sg.Column(input_grid_manager, vertical_alignment='top'), sg.Column(input_selectors_manager, vertical_alignment='top'),
