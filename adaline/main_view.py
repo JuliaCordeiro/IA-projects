@@ -10,13 +10,13 @@ COMBO_VALUES = ['A1', 'A2', 'A3',
                 'E1', 'E2', 'E3',
                 'J1', 'J2', 'J3',
                 'K1', 'K2', 'K3']
-CHARACTERS = np.loadtxt(open("docs/x.csv", "rb"), delimiter=",", skiprows=0)
+CHARACTERS = np.loadtxt(open("adaline/docs/x.csv", "rb"), delimiter=",", skiprows=0)
 MADALINE = ne.Madaline()
 CURRENT_COMBO_VALUE = 'A1'
 
 DEFAULT_MAX_EPOCHS = 5
 DEFAULT_MIN_ERROR = 0.05
-DEFAULT_LEARNING_RATE = 0.001
+DEFAULT_LEARNING_RATE = 0.1
 
 
 def update_character(window, char_id):
@@ -61,13 +61,13 @@ def make_window():
 
     layout = [[sg.MenubarCustom(menu_def, key='-MENU-')],
               [sg.Text('Training parameters', font='bold 14')],
-              [sg.Text('Learning Rate', size=10, justification='right',
+              [sg.Text('Learning Rate', size=15, justification='right',
                        tooltip='Learning rate used in training. Use values between 0.0 and 1.0.'),
                sg.Input(key='-LEARNING_RATE-', default_text=DEFAULT_LEARNING_RATE)],
-              [sg.Text('Epochs', size=10, justification='right',
+              [sg.Text('Epochs', size=15, justification='right',
                        tooltip='Max number of epochs to be used in training.'),
                sg.Input(key='-MAX_EPOCHS-', default_text=DEFAULT_MAX_EPOCHS)],
-              [sg.Text('Minimum error', size=10, justification='right',
+              [sg.Text('Minimum error', size=15, justification='right',
                        tooltip='Error value that stops training once achieved. Use values between 0.0 and 1.0'),
                sg.Input(key='-MIN_ERROR-', default_text=DEFAULT_MIN_ERROR)],
               [sg.Button('Train', size=15)],
@@ -78,7 +78,7 @@ def make_window():
               ]
     layout[-1].append(sg.Sizegrip())
     window = sg.Window('Adaline', layout, grab_anywhere=True, resizable=True, margins=(0, 0), use_custom_titlebar=True,
-                       finalize=True, keep_on_top=True)
+                       finalize=True, keep_on_top=True, size=(800,600))
 
     graph.draw_initial_graph(window['-CANVAS-'].TKCanvas)
 

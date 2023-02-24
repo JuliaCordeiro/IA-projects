@@ -39,8 +39,8 @@ class Madaline:
     output_layer_pure = np.zeros(7, dtype=float)
     output_layer_liquid = np.zeros(7, dtype=int)
     error_history = []
-    inputs = np.loadtxt(open("docs/x.csv", "rb"), delimiter=",", skiprows=0)
-    targets = np.loadtxt(open("docs/targets.csv", "rb"), delimiter=",", skiprows=0)
+    inputs = np.loadtxt(open("adaline/docs/x.csv", "rb"), delimiter=",", skiprows=0)
+    targets = np.loadtxt(open("adaline/docs/targets.csv", "rb"), delimiter=",", skiprows=0)
 
     def __init__(self):
         self.neurons = [Neuron() for i in range(63)]
@@ -56,14 +56,6 @@ class Madaline:
                 self.output_layer_liquid[output_index] = MAX_VALUE
             else:
                 self.output_layer_liquid[output_index] = MIN_VALUE
-    
-    def euclidean_distance(self, arr1, arr2):
-        distance = 0.0
-        for i in range(7):
-            distance += (arr1[i] - arr2[i])**2.0
-        distance = math.sqrt(distance)
-        print(f'Distance between: {arr1}, {arr2} = {distance}')
-        return distance
 
     def classify(self, input_id):
         input_data = self.inputs[input_id]
@@ -101,16 +93,10 @@ class Madaline:
                 math.pow((target_data[output_index] - self.output_layer_liquid[output_index]), 2.0))
         return error_calculated
 
-    def calculate_correction_factor(self, target):
-        correction_factor = 0.0
-        for i in range(7):
-            correction_factor += target[i] - self.output_layer_liquid[i]
-        return correction_factor
-
     def train(self, window, inputs, targets, learning_rate, max_epoch, minimum_error):
         self.error_history.clear()
         epoch = 1
-        error = 1.0
+        error = 1000.0
         while epoch <= max_epoch and error > minimum_error:
             error = 0.0
             for input_sample_index in range(21):
@@ -123,15 +109,14 @@ class Madaline:
                 # from input array into a single position from targets array
 
                 # Adjust weights
-                correction_factor = self.calculate_correction_factor(targets[int(input_sample_index / 3)])
                 for neuron_index in range(63):
                     for output_index in range(7):
                         new_weight = self.neurons[neuron_index].get_weight(output_index) + learning_rate \
-                                     * correction_factor * inputs[input_sample_index][neuron_index]
+                                     * (targets[int(input_sample_index/3)][output_index] - self.output_layer_liquid[output_index]) * inputs[input_sample_index][neuron_index]
                         self.neurons[neuron_index].update_weight(output_index, new_weight)
                 # Adjust Bias
                 for output_index in range(7):
-                    self.bias[output_index] = self.bias[output_index] + learning_rate * correction_factor
+                    self.bias[output_index] = self.bias[output_index] + learning_rate * (targets[int(input_sample_index/3)][output_index] - self.output_layer_liquid[output_index])
 
                 # DEBUG PRINTS
                 if FULL_DEBUG:
