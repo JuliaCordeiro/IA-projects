@@ -134,6 +134,7 @@ class Madaline:
             self.error_history.append(error)
 
             graph.update_graph(window['-CANVAS-'].TKCanvas, self.error_history)
+            window.refresh()
             
             if not FULL_DEBUG:
                 print(f'[LOG] Training... E:{epoch} error:{error}')
