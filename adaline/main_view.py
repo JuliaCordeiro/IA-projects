@@ -3,7 +3,7 @@ import numpy as np
 import network_elements as ne
 import graph_generator as graph
 
-COMBO_VALUES = ['A1','A2','A3','B1','B2','B3','C1','C2','C3','D1','D2','D3','E1','E2','E3','J1','J2','J3','K1','K2','K3']
+COMBO_VALUES = ['A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3', 'D1', 'D2', 'D3', 'E1', 'E2', 'E3', 'J1', 'J2', 'J3', 'K1', 'K2', 'K3']
 CHARACTERS = np.loadtxt(open("docs/x.csv", "rb"), delimiter=",", skiprows=0)
 MADALINE = ne.Madaline()
 CURRENT_COMBO_VALUE = 'A1'
