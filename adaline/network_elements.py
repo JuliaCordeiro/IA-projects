@@ -3,7 +3,7 @@ import math
 import matplotlib.pyplot as plt
 import graph_generator as graph
 
-FULL_DEBUG = True
+FULL_DEBUG = False
 
 
 class Neuron:
@@ -45,10 +45,42 @@ class Madaline:
             else:
                 self.output_layer_liquid[output_index] = -1
     
+    def euclidean_distance(self, arr1, arr2):
+        distance = 0.0
+        for i in range(7):
+            distance += (arr1[i] - arr2[i])**2.0
+        distance = math.sqrt(distance)
+        print(f'Distance between: {arr1}, {arr2} = {distance}')
+        return distance
+
     def classify(self, input_id):
         input = self.inputs[input_id]
         self.generate_output(input)
-        return self.output_layer_liquid.tolist().index(1)
+        output = self.output_layer_liquid
+        min_dist = 0.0
+        min_dist_id = -1
+        for i in range(7):
+            target = self.targets[i]
+            distance = self.euclidean_distance(output,target)
+            if distance < min_dist or min_dist_id == -1:
+                min_dist = distance
+                min_dist_id = i
+        print(f'Classified as id={min_dist_id}')
+
+        if min_dist_id == 0:
+            return 'A'
+        if min_dist_id == 1:
+            return 'B'
+        if min_dist_id == 2:
+            return 'C'
+        if min_dist_id == 3:
+            return 'D'
+        if min_dist_id == 4:
+            return 'E'
+        if min_dist_id == 5:
+            return 'J'
+        if min_dist_id == 6:
+            return 'K'
 
     def calculate_error(self, target):
         error = 0.0
@@ -82,7 +114,6 @@ class Madaline:
                     for output_index in range(7):
                         new_weight = self.neurons[neuron_index].get_weight(output_index) + learning_rate * correction_factor * inputs[input_sample_index][neuron_index]
                         self.neurons[neuron_index].update_weight(output_index, new_weight)
-                
                 # Adjust Bias
                 for output_index in range(7):
                     self.bias[output_index] = self.bias[output_index] + learning_rate * correction_factor
@@ -92,12 +123,12 @@ class Madaline:
                     print(f'[LOG] Epoch [{1}] Sample: {input_sample_index}')
                     print(f'\tTarget: {targets[int(input_sample_index/3)]}')
                     print(f'\tMadaline output liquid: {self.output_layer_liquid}')
-                    print(f'\tMadaline output pure: {self.output_layer_pure}')
-                    print(f'\tBias: {self.bias}')
+                    #print(f'\tMadaline output pure: {self.output_layer_pure}')
+                    #print(f'\tBias: {self.bias}')
                     print(f'\tError: {error}')
                     print(f'\tCorrection factor: {correction_factor} Learning Rate: {learning_rate}')
-                    # for i in range(63):
-                    #     print(f'\tN: {self.neurons[i]}')
+                    print(f'\t{self.neurons[0]}')
+                    input("Press Enter to run next epoch...")
 
             # Save error for history
             self.error_history.append(error)
@@ -112,15 +143,13 @@ class Madaline:
         return self.error_history
 
 def train(window, learning_rate, max_epochs, minimum_error):
-    print(f'Starting test learning_rate={learning_rate}, max_epochs={max_epochs}, minimum_error={minimum_error}')
-
     madaline = Madaline()
-    print(madaline)
-
-    print(madaline.inputs.shape)
-    print('----')
-    print(madaline.targets.shape)
-
     madaline.train(window, madaline.inputs, madaline.targets, learning_rate, max_epochs, minimum_error)
-    print(madaline.get_error_history())
     return madaline
+
+def test():
+    madaline = Madaline()
+    for i in range(63):
+        print(f'[{i}]: {madaline.neurons[i]}')
+        if(i % 10 == 0):
+            input("Press Enter to continue...")

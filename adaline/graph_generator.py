@@ -21,8 +21,6 @@ def error_values_plot(error, epoch, ax):
     matplotlib.pyplot.ylabel("Erro")
     matplotlib.pyplot.xlabel("Época")
 
-    print("ERROR: {}".format(error))
-
 
 def draw_figure(canvas, figure):
     tk_figure_agg = FigureCanvasTkAgg(figure, canvas)

@@ -50,6 +50,7 @@ def make_window():
     input_selectors_manager = [
         [sg.Combo(COMBO_VALUES, 'A1', size=10, key='-COMBO_BOX-', enable_events=True, readonly=True)],
         [sg.Button('Classify', size=10, disabled=True)],
+        [sg.Text('', key='-ANS_TXT-')]
     ]
 
     layout = [[sg.MenubarCustom(menu_def, key='-MENU-')],
@@ -77,7 +78,7 @@ def make_window():
     return window
 
 
-# TODO handle main_view events (train, classify)
+# TODO handle classify
 def main():
     window = make_window()
     while True:
@@ -104,9 +105,11 @@ def main():
             window['Classify'].update(disabled=False)
         elif event == 'Classify':
             print('[LOG] Clicked Classify')
+            CURRENT_COMBO_VALUE = values['-COMBO_BOX-']
             response = MADALINE.classify(COMBO_VALUES.index(CURRENT_COMBO_VALUE))
             print(f'[LOG] Classify response: {response}')
-            #print(f'[LOG] Classified {CURRENT_COMBO_VALUE} as {COMBO_VALUES[response]}')
+            window['-ANS_TXT-'].update(f'{response}')
+            #TODO Update a text element with the response
         elif event == '-COMBO_BOX-':
             CURRENT_COMBO_VALUE = values['-COMBO_BOX-']
             print(f'[LOG] Combo box changed, value = {CURRENT_COMBO_VALUE}')
