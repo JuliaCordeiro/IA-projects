@@ -13,8 +13,8 @@ def error_values_plot(error, epoch, ax):
     ax.cla()
 
     # plot error
-    ax.plot(error)
-    ax.scatter(len(error)-1, error[-1])
+    ax.plot(epoch, error)
+    ax.scatter(len(error), error[-1])
 
     matplotlib.pyplot.title("Erro X Época")
     matplotlib.pyplot.ylabel("Erro")
