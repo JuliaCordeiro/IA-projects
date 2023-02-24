@@ -4,13 +4,15 @@ import matplotlib.pyplot as plt
 import graph_generator as graph
 
 FULL_DEBUG = False
-
+LIMIT = 0.0
+MAX_VALUE = 1
+MIN_VALUE = -1
 
 class Neuron:
     weights = []
 
     def __init__(self):
-        self.weights = np.random.rand(7) * 1 - 0.5
+        self.weights = np.random.uniform(low=-0.5, high=0.5, size=7)
 
     def update_weight(self, index, new_weight):
         self.weights[index] = new_weight
@@ -40,10 +42,10 @@ class Madaline:
             for input_index in range(63):
                 self.output_layer_pure[output_index] += input[input_index] * self.neurons[input_index].get_weight(output_index)
 
-            if self.output_layer_pure[output_index] >= 0.0:
-                self.output_layer_liquid[output_index] = 1
+            if self.output_layer_pure[output_index] >= LIMIT:
+                self.output_layer_liquid[output_index] = MAX_VALUE
             else:
-                self.output_layer_liquid[output_index] = -1
+                self.output_layer_liquid[output_index] = MIN_VALUE
     
     def euclidean_distance(self, arr1, arr2):
         distance = 0.0
@@ -120,14 +122,14 @@ class Madaline:
 
                 #DEBUG PRINTS
                 if FULL_DEBUG:
-                    print(f'[LOG] Epoch [{1}] Sample: {input_sample_index}')
+                    print(f'[LOG] Epoch [{epoch}] Sample: {input_sample_index}')
                     print(f'\tTarget: {targets[int(input_sample_index/3)]}')
                     print(f'\tMadaline output liquid: {self.output_layer_liquid}')
-                    #print(f'\tMadaline output pure: {self.output_layer_pure}')
-                    #print(f'\tBias: {self.bias}')
+                    print(f'\tMadaline output pure: {self.output_layer_pure}')
+                    print(f'\tBias: {self.bias}')
                     print(f'\tError: {error}')
                     print(f'\tCorrection factor: {correction_factor} Learning Rate: {learning_rate}')
-                    print(f'\t{self.neurons[0]}')
+                    print(f'\tNeuron0: {self.neurons[0]}')
                     input("Press Enter to run next epoch...")
 
             # Save error for history
@@ -148,9 +150,11 @@ def train(window, learning_rate, max_epochs, minimum_error):
     madaline.train(window, madaline.inputs, madaline.targets, learning_rate, max_epochs, minimum_error)
     return madaline
 
-def test():
+def testMadaline():
     madaline = Madaline()
     for i in range(63):
         print(f'[{i}]: {madaline.neurons[i]}')
         if(i % 10 == 0):
             input("Press Enter to continue...")
+
+    print(f'bias: {madaline.bias}')
