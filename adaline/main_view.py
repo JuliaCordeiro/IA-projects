@@ -10,7 +10,7 @@ COMBO_VALUES = ['A1', 'A2', 'A3',
                 'E1', 'E2', 'E3',
                 'J1', 'J2', 'J3',
                 'K1', 'K2', 'K3']
-CHARACTERS = np.loadtxt(open("adaline/docs/x.csv", "rb"), delimiter=",", skiprows=0)
+CHARACTERS = np.loadtxt(open("docs/x.csv", "rb"), delimiter=",", skiprows=0)
 MADALINE = ne.Madaline()
 CURRENT_COMBO_VALUE = 'A1'
 
@@ -78,7 +78,7 @@ def make_window():
               ]
     layout[-1].append(sg.Sizegrip())
     window = sg.Window('Adaline', layout, grab_anywhere=True, resizable=True, margins=(0, 0), use_custom_titlebar=True,
-                       finalize=True, keep_on_top=True, size=(800,600))
+                       finalize=True, keep_on_top=True, size=(800, 600))
 
     graph.draw_initial_graph(window['-CANVAS-'].TKCanvas)
 

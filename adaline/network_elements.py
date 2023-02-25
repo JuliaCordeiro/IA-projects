@@ -8,6 +8,7 @@ LIMIT = 0.0
 MAX_VALUE = 1
 MIN_VALUE = -1
 
+
 def euclidean_distance(arr1, arr2):
     distance = 0.0
     for i in range(7):
@@ -39,8 +40,8 @@ class Madaline:
     output_layer_pure = np.zeros(7, dtype=float)
     output_layer_liquid = np.zeros(7, dtype=int)
     error_history = []
-    inputs = np.loadtxt(open("adaline/docs/x.csv", "rb"), delimiter=",", skiprows=0)
-    targets = np.loadtxt(open("adaline/docs/targets.csv", "rb"), delimiter=",", skiprows=0)
+    inputs = np.loadtxt(open("docs/x.csv", "rb"), delimiter=",", skiprows=0)
+    targets = np.loadtxt(open("docs/targets.csv", "rb"), delimiter=",", skiprows=0)
 
     def __init__(self):
         self.neurons = [Neuron() for i in range(63)]
@@ -112,11 +113,15 @@ class Madaline:
                 for neuron_index in range(63):
                     for output_index in range(7):
                         new_weight = self.neurons[neuron_index].get_weight(output_index) + learning_rate \
-                                     * (targets[int(input_sample_index/3)][output_index] - self.output_layer_liquid[output_index]) * inputs[input_sample_index][neuron_index]
+                                     * (targets[int(input_sample_index/3)][output_index]
+                                        - self.output_layer_liquid[output_index]) \
+                                     * inputs[input_sample_index][neuron_index]
                         self.neurons[neuron_index].update_weight(output_index, new_weight)
                 # Adjust Bias
                 for output_index in range(7):
-                    self.bias[output_index] = self.bias[output_index] + learning_rate * (targets[int(input_sample_index/3)][output_index] - self.output_layer_liquid[output_index])
+                    self.bias[output_index] = self.bias[output_index] + learning_rate \
+                                              * (targets[int(input_sample_index/3)][output_index]
+                                                 - self.output_layer_liquid[output_index])
 
                 # DEBUG PRINTS
                 if FULL_DEBUG:
@@ -126,7 +131,7 @@ class Madaline:
                     print(f'\tMadaline output pure: {self.output_layer_pure}')
                     print(f'\tBias: {self.bias}')
                     print(f'\tError: {error}')
-                    print(f'\tCorrection factor: {correction_factor} Learning Rate: {learning_rate}')
+                    print(f'\tLearning Rate: {learning_rate}')
                     print(f'\tNeuron0: {self.neurons[0]}')
                     input("Press Enter to run next epoch...")
 
@@ -151,10 +156,11 @@ def train(window, learning_rate, max_epochs, minimum_error):
     madaline.train(window, madaline.inputs, madaline.targets, learning_rate, max_epochs, minimum_error)
     return madaline
 
-def testMadaline():
+
+def test_madaline():
     madaline = Madaline()
     for i in range(63):
         print(f'[{i}]: {madaline.neurons[i]}')
-        if(i % 10 == 0):
+        if i % 10 == 0:
             input("Press Enter to continue...")
     print(f'bias: {madaline.bias}')
