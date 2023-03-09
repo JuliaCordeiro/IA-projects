@@ -9,6 +9,7 @@ class Neuron:
 
     def __init__(self, bias, num_weights):
         self.bias = bias
+        self.weights = []
         for i in range(num_weights):
             self.weights.append(np.random.uniform(low=RANDOM_LOWER_LIMIT, high=RANDOM_UPPER_LIMIT))
     
@@ -22,8 +23,10 @@ class Layer:
     neurons = []
 
     def __init__(self, num_neurons, num_weights):
+        self.neurons = []
         for i in range(num_neurons):
-            self.neurons.append(Neuron(np.random.uniform(low=RANDOM_LOWER_LIMIT, high=RANDOM_UPPER_LIMIT),num_weights))
+            neuron = Neuron(np.random.uniform(low=RANDOM_LOWER_LIMIT, high=RANDOM_UPPER_LIMIT),num_weights)
+            self.neurons.append(neuron)
     
     def propagate(self, input):
         result = []
@@ -44,7 +47,6 @@ class Layer:
 class MultilayerPerceptron:
     layers = []
 
-    #TODO fix add layer using wrong weight (is it multiplying neurons x weight ?!?)
     def add_layer(self, num_neurons, num_weights):
         layers_len = len(self.layers)
         if layers_len != 0:
