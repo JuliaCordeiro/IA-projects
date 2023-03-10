@@ -17,7 +17,7 @@ class Neuron:
         self.weights[index] = new_weight
 
     def get_num_weights(self):
-        return self.weights.shape[0]
+        return len(self.weights)
 
 class Layer:
     neurons = []
@@ -28,22 +28,27 @@ class Layer:
             neuron = Neuron(np.random.uniform(low=RANDOM_LOWER_LIMIT, high=RANDOM_UPPER_LIMIT),num_weights)
             self.neurons.append(neuron)
     
-    def propagate(self, input):
-        result = []
-        if input.shape[0] == len(self.neurons):
-            for i in range(self.neurons.get_num_weights()):
-                output = 0.0
-                for j in range(len(self.neurons)):
-                    output += self.neurons[j].weights[i] * input[j] + self.neurons[j].bias
-                result.append(output)
-            return result
-        else:
-            print(f'[ERROR] Input shape ({input.shape[0]}) != neurons shape ({len(self.neurons)})')
-            return result
-        
     def __str__(self):
         return f'Layer: neurons={len(self.neurons)} weights={len(self.neurons[0].weights)}'
+    
+    def get_bias(self):
+        bias = []
+        for neuron in self.neurons:
+            bias.append(neuron.bias)
+        return bias
         
+class InputLayer:
+    neurons = []
+
+    def __init__(self, num_neurons, num_weights):
+        self.neurons = []
+        for i in range(num_neurons):
+            neuron = Neuron(0.0,num_weights)
+            self.neurons.append(neuron)
+        
+    def __str__(self):
+        return f'InputLayer: neurons={len(self.neurons)} weights={len(self.neurons[0].weights)}'
+
 class MultilayerPerceptron:
     layers = []
 
@@ -57,10 +62,21 @@ class MultilayerPerceptron:
             else:
                 print(f'[ERROR] Couldn\'t add new layer! num_neurons was expected to be {len(self.layers[layers_len-1].neurons[0].weights)} but is {num_neurons}!')
         else:
-            new_layer = Layer(num_neurons, num_weights)
+            new_layer = InputLayer(num_neurons, num_weights)
             self.layers.append(new_layer)
-            print(f'[INFO] New layer added: {new_layer}')
+            print(f'[INFO] New input layer added: {new_layer}')
+    
+    def generate_output(self, _input):
+        result = _input
+        for layer in self.layers:
+            print(f'Step {layer}')
+            print(f'\tInput: {result}')
+            result = layer.propagate(result) #TODO implement propagate inside MLP
+            print(f'\tIntermediary Output: {result}')
+        print(f'Output: {result}')
 
 mlp = MultilayerPerceptron()
 mlp.add_layer(5,10)
-mlp.add_layer(10,1)
+mlp.add_layer(10,5)
+
+mlp.generate_output([1,2,3,4,5])
