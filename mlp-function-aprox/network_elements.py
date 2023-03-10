@@ -3,6 +3,7 @@ import numpy as np
 RANDOM_LOWER_LIMIT = -0.5
 RANDOM_UPPER_LIMIT = 0.5
 
+
 class Neuron:
     bias = 0.0
     weights = []
@@ -19,13 +20,14 @@ class Neuron:
     def get_num_weights(self):
         return self.weights.shape[0]
 
+
 class Layer:
     neurons = []
 
     def __init__(self, num_neurons, num_weights):
         self.neurons = []
         for i in range(num_neurons):
-            neuron = Neuron(np.random.uniform(low=RANDOM_LOWER_LIMIT, high=RANDOM_UPPER_LIMIT),num_weights)
+            neuron = Neuron(np.random.uniform(low=RANDOM_LOWER_LIMIT, high=RANDOM_UPPER_LIMIT), num_weights)
             self.neurons.append(neuron)
     
     def propagate(self, input):
@@ -43,7 +45,8 @@ class Layer:
         
     def __str__(self):
         return f'Layer: neurons={len(self.neurons)} weights={len(self.neurons[0].weights)}'
-        
+
+
 class MultilayerPerceptron:
     layers = []
 
@@ -55,12 +58,14 @@ class MultilayerPerceptron:
                 self.layers.append(new_layer)
                 print(f'[INFO] New layer added: {new_layer}')
             else:
-                print(f'[ERROR] Couldn\'t add new layer! num_neurons was expected to be {len(self.layers[layers_len-1].neurons[0].weights)} but is {num_neurons}!')
+                print(f'[ERROR] Couldn\'t add new layer! num_neurons was expected to be '
+                      f'{len(self.layers[layers_len-1].neurons[0].weights)} but is {num_neurons}!')
         else:
             new_layer = Layer(num_neurons, num_weights)
             self.layers.append(new_layer)
             print(f'[INFO] New layer added: {new_layer}')
 
+
 mlp = MultilayerPerceptron()
-mlp.add_layer(5,10)
-mlp.add_layer(10,1)
+mlp.add_layer(5, 10)
+mlp.add_layer(10, 1)

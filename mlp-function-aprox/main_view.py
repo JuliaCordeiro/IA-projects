@@ -5,6 +5,7 @@ DEFAULT_MAX_EPOCHS = 5
 DEFAULT_MIN_ERROR = 0.05
 DEFAULT_LEARNING_RATE = 0.1
 
+
 def make_window():
     sg.theme('DarkBlue')
     menu_def = [['&Application', ['E&xit']],
