@@ -1,4 +1,5 @@
 import matplotlib
+import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 EPOCH = []
@@ -16,9 +17,9 @@ def error_values_plot(error, epoch, ax):
     ax.plot(epoch, error)
     ax.scatter(len(error), error[-1])
 
-    matplotlib.pyplot.title("Erro X Época")
-    matplotlib.pyplot.ylabel("Erro")
-    matplotlib.pyplot.xlabel("Época")
+    plt.title("Erro X Época")
+    plt.ylabel("Erro")
+    plt.xlabel("Época")
 
 
 def draw_figure(canvas, figure):
@@ -29,17 +30,17 @@ def draw_figure(canvas, figure):
 
 
 def draw_initial_graph(canvas):
-    _VARS['plt_fig'] = matplotlib.pyplot.figure()
-    matplotlib.pyplot.title("Erro X Época")
-    matplotlib.pyplot.ylabel("Erro")
-    matplotlib.pyplot.xlabel("Época")
+    _VARS['plt_fig'] = plt.figure()
+    plt.title("Erro X Época")
+    plt.ylabel("Erro")
+    plt.xlabel("Época")
     _VARS['fig_agg'] = draw_figure(canvas, _VARS['plt_fig'])
 
 
 def update_graph(canvas, error):
     _VARS['fig_agg'].get_tk_widget().forget()
 
-    matplotlib.pyplot.clf()
+    plt.clf()
 
     if len(error) <= 1:
         EPOCH.clear()

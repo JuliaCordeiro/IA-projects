@@ -1,5 +1,6 @@
 import PySimpleGUI as sg
 import numpy as np
+import common_files.graph_generator as graph
 
 DEFAULT_MAX_EPOCHS = 5
 DEFAULT_MIN_ERROR = 0.05
@@ -27,8 +28,10 @@ def make_window():
               [sg.Canvas(key='-CANVAS-')]
               ]
     layout[-1].append(sg.Sizegrip())
-    window = sg.Window('MLP - Func. Aprox.', layout, grab_anywhere=True, resizable=True, margins=(0, 0), use_custom_titlebar=True,
-                       finalize=True, keep_on_top=True, size=(800,600))
+    window = sg.Window('MLP - Func. Aprox.', layout, grab_anywhere=True, resizable=True, margins=(0, 0),
+                       use_custom_titlebar=True, finalize=True, keep_on_top=True, size=(800, 600))
+
+    graph.draw_initial_graph(window['-CANVAS-'].TKCanvas)
 
     window.set_min_size(window.size)
     return window
@@ -53,10 +56,10 @@ def main():
                      keep_on_top=True)
         elif event == 'Train':
             print('[LOG] Clicked Train')
-            #TODO implement train
+            # TODO implement train
         elif event == 'Classify':
             print('[LOG] Clicked Classify')
-            #TODO Implement classify function
+            # TODO Implement classify function
     window.close()
     exit(0)
 
