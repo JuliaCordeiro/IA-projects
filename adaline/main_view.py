@@ -1,7 +1,7 @@
 import PySimpleGUI as sg
 import numpy as np
 import network_elements as ne
-import graph_generator as graph
+import common_files.graph_generator as graph
 
 COMBO_VALUES = ['A1', 'A2', 'A3',
                 'B1', 'B2', 'B3',
