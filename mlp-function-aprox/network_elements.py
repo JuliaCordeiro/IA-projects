@@ -38,18 +38,20 @@ class Layer:
         for neuron in self.neurons:
             bias.append(neuron.bias)
         return bias
-        
+
+
 class InputLayer:
     neurons = []
 
     def __init__(self, num_neurons, num_weights):
         self.neurons = []
         for i in range(num_neurons):
-            neuron = Neuron(0.0,num_weights)
+            neuron = Neuron(0.0, num_weights)
             self.neurons.append(neuron)
         
     def __str__(self):
         return f'InputLayer: neurons={len(self.neurons)} weights={len(self.neurons[0].weights)}'
+
 
 class MultilayerPerceptron:
     layers = []
@@ -74,13 +76,13 @@ class MultilayerPerceptron:
         for layer in self.layers:
             print(f'Step {layer}')
             print(f'\tInput: {result}')
-            result = layer.propagate(result) #TODO implement propagate inside MLP
+            result = layer.propagate(result)  # TODO implement propagate inside MLP
             print(f'\tIntermediary Output: {result}')
         print(f'Output: {result}')
 
 
 mlp = MultilayerPerceptron()
-mlp.add_layer(5,10)
-mlp.add_layer(10,5)
+mlp.add_layer(5, 10)
+mlp.add_layer(10, 5)
 
-mlp.generate_output([1,2,3,4,5])
+mlp.generate_output([1, 2, 3, 4, 5])
