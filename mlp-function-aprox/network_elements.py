@@ -1,7 +1,9 @@
 import numpy as np
+import activation_functions as af
 
 RANDOM_LOWER_LIMIT = -0.5
 RANDOM_UPPER_LIMIT = 0.5
+ACTIVATION_FUNCTION = "tanh"
 
 
 class Neuron:
@@ -16,9 +18,6 @@ class Neuron:
     
     def update_weight(self, index, new_weight):
         self.weights[index] = new_weight
-
-    def get_num_weights(self):
-        return len(self.weights)
 
 
 class Layer:
@@ -52,6 +51,17 @@ class InputLayer:
     def __str__(self):
         return f'InputLayer: neurons={len(self.neurons)} weights={len(self.neurons[0].weights)}'
 
+class OutputLayer:
+    neurons = []
+
+    def __init__(self, num_neurons):
+        self.neurons = []
+        for i in range(num_neurons):
+            neuron = Neuron(np.random.uniform(low=RANDOM_LOWER_LIMIT, high=RANDOM_UPPER_LIMIT), 0)
+            self.neurons.append(neuron)
+    
+    def __str__(self):
+        return f'OutputLayer: neurons={len(self.neurons)}'
 
 class MultilayerPerceptron:
     layers = []
@@ -70,19 +80,48 @@ class MultilayerPerceptron:
             new_layer = InputLayer(num_neurons, num_weights)
             self.layers.append(new_layer)
             print(f'[INFO] New input layer added: {new_layer}')
+
+    #Add more activations, using pre-made functions from activation_functions.py as needed
+    def activate(self, input, activation_function):
+        output = []
+        if activation_function == "tanh":
+            for x in input:
+                y = af.tanh(x, 1.0)
+                output.append(y)
+
+        return output
+
+    def add_output_layer(self):
+        layers_len = len(self.layers)
+        new_output_layer = OutputLayer(len(self.layers[layers_len-1].neurons[0].weights))
+        self.layers.append(new_output_layer)
+        print(f'[INFO] Auto-generated output layer: {new_output_layer}')
     
+    def propagate(self, layer, next_layer, _input):
+        result = []
+        for i in range(len(next_layer.neurons)):
+            output = next_layer.neurons[i].bias
+            for j in range(len(layer.neurons)):
+                output += _input[j] * layer.neurons[j].weights[i]
+            result.append(output)
+        result = self.activate(result, "tanh") #ACTIVATION
+        return result
+
     def generate_output(self, _input):
         result = _input
-        for layer in self.layers:
-            print(f'Step {layer}')
+        for i in range(len(self.layers)-1):
+            print(f'Step {self.layers[i]}')
             print(f'\tInput: {result}')
-            result = layer.propagate(result)  # TODO implement propagate inside MLP
+            result = self.propagate(self.layers[i], self.layers[i+1], result)
             print(f'\tIntermediary Output: {result}')
-        print(f'Output: {result}')
+        result = self.activate(result, "tanh")
+        print(f'\tFinal Output: {result}')
+        return result
 
 
 mlp = MultilayerPerceptron()
 mlp.add_layer(5, 10)
-mlp.add_layer(10, 5)
+mlp.add_layer(10, 1)
+mlp.add_output_layer()
 
 mlp.generate_output([1, 2, 3, 4, 5])
